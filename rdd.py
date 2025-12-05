@@ -1,4 +1,5 @@
 from pyspark import SparkContext, SparkConf
+import time
 
 appName = "MyApp"
 master = "local[*]"
@@ -30,6 +31,7 @@ def fqdklsmjf(x, y):
         return (x[0], x[1])
 
 test2 = distFile.map(lambda t : (t.split(" ")[0], [t.split(" ")[2]])).reduceByKey(lambda x,y : x+y)
+test2.saveAsTextFile('test2')
 test4 = distFile.map(f)
 test3 = distFile.map(lambda t : (t.split(" ")[0])).distinct()
 
@@ -95,16 +97,20 @@ def func (tuples) :
     lenurl = len(urls)
     dividedRank = rank/lenurl
     return fusion(urls,dividedRank)
+duration = []
+for i in range(1,5):
+    start = time.time()
+    biboup = test2.join(ranks).values().flatMap(func)
+    #biboup = test2.join(ranks).values().flatMap(lambda urls,rank : (urls.map(lambda dest : (dest, rank/len(urls)))))
+    test2.join(ranks).saveAsTextFile('cout' + str(i))
+    biboup.saveAsTextFile('biboup3'+ str(i))
+    ranks = biboup.reduceByKey(lambda x,y : x+y).mapValues(lambda z : 0.15 + 0.85 * z)
+    duration.append(time.time() - start)
+    sc.cancelAllJobs()
 
-biboup = test2.join(ranks).values().flatMap(func)
-#biboup = test2.join(ranks).values().flatMap(lambda urls,rank : (urls.map(lambda dest : (dest, rank/len(urls)))))
-
-biboup.saveAsTextFile('biboup3')
-kqldfjhsdfg = biboup.reduceByKey(lambda x,y : x+y).mapValues(lambda z : 0.15 + 0.85 * z)
-print(kqldfjhsdfg.collect())
-kqldfjhsdfg.saveAsTextFile('winoupawin')
+ranks.saveAsTextFile('winoupawinbis')
 iter = 5
-
+print(duration)
 #contribs = test2.join(ranks).values().flatMap(lambda case : case.map(lambda dest : (dest, case[1]/case[0].size())))
 
 #print (contribs.collect())
