@@ -2,9 +2,9 @@
 set -euo pipefail
 
 # Optional .env support
-if [ -f "../.env" ]; then
+if [ -f ".env" ]; then
   # shellcheck disable=SC1091
-  source ../.env
+  source .env
 fi
 
 PROJECT_ID="${PROJECT_ID:-YOUR_PROJECT_ID}"

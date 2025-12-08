@@ -6,12 +6,14 @@ from pyspark.sql import Row
 from pyspark.sql.functions import lit
 import time
 
-def run_pageRank_dataframe(conf, sc, spark) :
+def run_pageRank_dataframe(conf, sc, spark, input_path) :
     appName = "MyApp"
     master = "local[*]"
 
+    print("DEBUT DATAFRAME")
+
     duration = []
-    distFile = sc.textFile("20000_first_lines.ttl").map(lambda r : (Row(r.split(" ")[0]), Row(r.split(" ")[1]), Row(r.split(" ")[2]))).toDF()
+    distFile = sc.textFile(input_path).map(lambda r : (Row(r.split(" ")[0]), Row(r.split(" ")[1]), Row(r.split(" ")[2]))).toDF()
 
     sel = distFile.select("_1","_3")
     sel = sel.withColumnRenamed("_3", "_2")
@@ -29,29 +31,19 @@ def run_pageRank_dataframe(conf, sc, spark) :
 
     temp_state = temp_state.withColumnRenamed("_3", "_4")
     duration.append(time.time() - start)
-    spark.interruptAll()
     for i in range(1,5) :
         start = time.time()
         select_cmd = select_cmd.join(temp_state, "_1")
-        print(select_cmd.show())
         select_cmd = select_cmd.withColumn('_3', select_cmd._3*select_cmd._4)
         select_cmd = select_cmd.groupby("_2").sum("_3")
         select_cmd = select_cmd.withColumnRenamed("sum(_3)", "_3")
         select_cmd = select_cmd.withColumn('_3', 0.15+0.85*select_cmd._3)
         select_cmd = select_cmd.withColumnRenamed("_2", "_1")
         duration.append(time.time() - start)
-        spark.interruptAll()
-        sc.cancelAllJobs()
+        #sc.cancelAllJobs()
 
-    print(duration)
+    print("Duration dataframe : ", duration)
+    max_row = select_cmd.agg({"_3": "max"}).collect()[0][0]
+    print("MAX DATAFRAME :", max_row)
+
     return duration
-    #suite = select_cmd.join ("")
-    """print(sel.show())
-    rank = sel.select("_1")
-    rank = rank.withColumn('_3', lit(1))
-    rank = rank.groupBy("_1").avg()
-    rank = rank.withColumnRenamed("avg(_3)", "_3")
-    print(rank.show())
-    print(rank._3)
-    rank = rank.join(sel,"_1")
-    print(rank.show())"""

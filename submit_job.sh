@@ -3,10 +3,11 @@
 set -euo pipefail
 
 # Optional .env support
-if [ -f "../.env" ]; then
+if [ -f ".env" ]; then
   # shellcheck disable=SC1091
-  source ../.env
+  source .env
 fi
+
 
 PROJECT_ID="${PROJECT_ID:-YOUR_PROJECT_ID}"
 BUCKET="${BUCKET:-YOUR_BUCKET_NAME}"
@@ -44,10 +45,11 @@ echo "Soumission du job pyspark diagramme.py vers le cluster ${CLUSTER_NAME} (re
 echo "Input:  ${GCS_INPUT}"
 echo "Output: ${GCS_OUTPUT}"
 
-gcloud dataproc jobs submit pyspark "$GCS_JOB_PATH" \
+gcloud dataproc jobs submit pyspark "gs://${BUCKET}/jobs/diagramme.py" \
   --cluster="$CLUSTER_NAME" \
   --region="$REGION" \
   --project="$PROJECT_ID" \
+  --py-files="gs://${BUCKET}/jobs/rdd.py,gs://${BUCKET}/jobs/dataframe.py" \
   -- \
   --input "$GCS_INPUT" --output "$GCS_OUTPUT"
 
