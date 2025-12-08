@@ -27,6 +27,8 @@ Plusieurs scripts bash :
 
 ## Graphiques
 
+_NOTE : Les graphiques ont été réalisés avec 1% du dataframe originel, ce qui fait que les graphiques ont des valeurs plutôt faibles_
+
 ![Diagramme pour 3 noeuds](/diagrams/pagerank_graph_3nodes.png "Diagramme pour 3 noeuds")
 
 ![Diagramme pour 4 noeuds](/diagrams/pagerank_graph_4nodes.png "Diagramme pour 4 noeuds")
