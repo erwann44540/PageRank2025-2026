@@ -36,19 +36,19 @@ _NOTE :_
 
 ![Diagramme pour 3 noeuds](/diagrams/pagerank_graph_3nodes.png "Diagramme pour 3 noeuds")
 
-Max : <http://dbpedia.org/resource/FIFA>' (RDD : 166.1415274865461 / DF : 166.14152748654607)
+Max : <http://dbpedia.org/resource/FIFA> (RDD : 166.1415274865461 / DF : 166.14152748654607)
 
 ### Diagramme pour 4 noeuds 
 
 ![Diagramme pour 4 noeuds](/diagrams/pagerank_graph_4nodes.png "Diagramme pour 4 noeuds")
 
-Max : <http://dbpedia.org/resource/FIFA>' (RDD : 166.1415274865461 / DF : 166.14152748654604)
+Max : <http://dbpedia.org/resource/FIFA> (RDD : 166.1415274865461 / DF : 166.14152748654604)
 
 ### Diagramme pour 6 noeuds 
 
 ![Diagramme pour 6 noeuds](/diagrams/pagerank_graph_6nodes.png "Diagramme pour 6 noeuds")
 
-Max : <http://dbpedia.org/resource/FIFA>' (RDD : 166.1415274865461 / DF : 166.14152748654604)
+Max : <http://dbpedia.org/resource/FIFA> (RDD : 166.1415274865461 / DF : 166.14152748654604)
 
 ### Observations
 
